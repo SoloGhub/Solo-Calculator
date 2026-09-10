@@ -8,8 +8,8 @@
   const TROY_OZ_G = 31.1034768;
   const currencies = ['AED', 'USD', 'EUR', 'GBP'];
   const modes = ['advisor', 'meeting', 'client', 'internal'];
-  const types = {fixed_income:'Fixed Income',fund:'Investment Fund',structured:'Structured Product',deposit:'Deposit / Cash',other:'Other Product'};
-  const reportNames = {fresh_proposal:'Fresh Client Proposal',existing_proposal:'Existing Client Proposal',booking_confirmation:'Deal Booking Confirmation',client_statement:'HNWI Client Statement',internal_review:'Internal Review'};
+  const types = {fixed_income:'Fixed income',fund:'Investment fund',structured:'Structured product',deposit:'Deposit / cash',other:'Other investment'};
+  const reportNames = {fresh_proposal:'Investment proposal',existing_proposal:'Portfolio proposal',booking_confirmation:'Transaction confirmation',client_statement:'Portfolio statement',internal_review:'Internal review'};
   const copy = value => JSON.parse(JSON.stringify(value));
   const uid = () => globalThis.crypto?.randomUUID?.() || 'r_' + Date.now().toString(36) + Math.random().toString(36).slice(2);
   const today = () => new Intl.DateTimeFormat('en-CA', {timeZone:'Asia/Dubai',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());

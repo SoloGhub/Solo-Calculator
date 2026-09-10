@@ -1,0 +1,10 @@
+{
+  "crest-transparent.png": {
+    "source": "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:614810fc-9daa-44bc-9699-0a7f2e433984",
+    "sha256": "8cd712a4c51c8b3331a332ac52a58e3ce0bb9b067d307d4761be8f873ccf5cc8"
+  },
+  "financial-icons.png": {
+    "source": "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:12efaf3e-e7f1-49cc-b449-360d1f714674",
+    "sha256": "f55621d3d8a13d4d4f7693df0d4ab20fd02c9b793d8840d60aadf5b008685c97"
+  }
+}

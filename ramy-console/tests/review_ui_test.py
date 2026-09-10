@@ -77,7 +77,7 @@ try:
   page.locator('[data-action=pdf-client]:visible').first.click();page.frame_locator('#reportFrame').locator('.report-content').wait_for()
   check('Client PDF preview opens',page.locator('#preview').is_visible());page.locator('#closePreview').click()
   page.locator('#toolsButton').click()
-  with page.expect_download() as dl:page.locator('[data-action=master]:visible').first.click()
+  with page.expect_download() as dl:page.locator('#tools [data-action=master]:visible').first.click()
   dl.value.save_as(str(OUT/'edited-master.html'))
   doc=(OUT/'edited-master.html').read_text();check('Master embeds artwork',('RAMY_ARTWORK' in doc) and 'script src=' not in doc)
   check('Master retains actual reference','TEST-01' in doc)

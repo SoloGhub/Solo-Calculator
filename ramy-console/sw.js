@@ -1,7 +1,7 @@
 /* Only the versioned static application shell is cached. Never cache client files or API traffic. */
 'use strict';
-const CACHE='ramy-shell-13-0-2';
-const FILES=['index.html','styles.css','assets.js','core.js','store.js','reports.js','app.js','manifest.webmanifest','icon192.png','icon512.png','apple-touch-icon.png'];
+const CACHE='ramy-shell-13-1-0';
+const FILES=['index.html','styles.css','assets.js','artwork.js','core.js','store.js','reports.js','app.js','manifest.webmanifest','icon192.png','icon512.png','apple-touch-icon.png'];
 const URLS=FILES.map(f=>new URL(f,self.registration.scope).href);
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(URLS))));
 self.addEventListener('activate',event=>event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('ramy-shell-')&&k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()])));

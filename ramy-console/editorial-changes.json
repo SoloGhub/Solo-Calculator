@@ -1,0 +1,548 @@
+[
+  [
+    "core.js",
+    1,
+    "fresh_proposal:'Fresh Client Proposal',existing_proposal:'Existing Client Proposal',booking_confirmation:'Deal Booking Confirmation',client_statement:'HNWI Client Statement',internal_review:'Internal Review'",
+    "fresh_proposal:'Investment proposal',existing_proposal:'Portfolio proposal',booking_confirmation:'Transaction confirmation',client_statement:'Portfolio statement',internal_review:'Internal review'"
+  ],
+  [
+    "core.js",
+    1,
+    "fixed_income:'Fixed Income',fund:'Investment Fund',structured:'Structured Product',deposit:'Deposit / Cash',other:'Other Product'",
+    "fixed_income:'Fixed income',fund:'Investment fund',structured:'Structured product',deposit:'Deposit / cash',other:'Other investment'"
+  ],
+  [
+    "app.js",
+    1,
+    "const intro=(n,title,copy,badge='')=>`<div class=\"intro\"><div><div class=\"step\">${E(n)}</div><h1>${E(title)}</h1><p>${E(copy)}</p></div>${badge?`<span class=\"badge\">${E(badge)}</span>`:''}</div>`;",
+    "const artwork=n=>globalThis.RAMY_ARTWORK?.[n]?`<img class=\"section-art\" src=\"${RAMY_ARTWORK[n]}\" alt=\"\" aria-hidden=\"true\" width=\"96\" height=\"96\">`:'';\nconst intro=(section,title,copy,badge='')=>`<div class=\"intro\"><div class=\"intro-copy\"><h1>${E(title)}</h1>${copy?`<p>${E(copy)}</p>`:''}${badge?`<span class=\"badge\">${E(badge)}</span>`:''}</div>${artwork(section)}</div>`;\nconst statusLabel=s=>({proposal:'Proposed',booked:'Booked',cancelled:'Cancelled',matured:'Matured'}[s]||s);\nconst scheduleLabel=s=>({one_off:'One-off',monthly:'Monthly',weekly:'Weekly',flexible:'Flexible',existing:'Existing holding'}[s]||s);"
+  ],
+  [
+    "app.js",
+    1,
+    "<span>Device-local workspace · 13.0</span>",
+    "<span>Client portfolio</span>"
+  ],
+  [
+    "app.js",
+    2,
+    "(state.client.name||'New client')",
+    "(state.client.name||'No client selected')"
+  ],
+  [
+    "app.js",
+    1,
+    "{client:'Client',gold:'Gold',portfolio:'Portfolio',results:'Results',reports:'Reports'}",
+    "{client:'Client',gold:'Gold',portfolio:'Holdings',results:'Overview',reports:'Reports'}"
+  ],
+  [
+    "app.js",
+    1,
+    "gold?'Batch inputs':'Product inputs'",
+    "gold?'Transaction details':'Investment details'"
+  ],
+  [
+    "app.js",
+    1,
+    "gold?'Saved batches':'Saved products'",
+    "gold?'Transactions':'Holdings'"
+  ],
+  [
+    "app.js",
+    1,
+    "intro('01 / Client','Who are we advising?','These details identify the client on every screen and report.')",
+    "intro('client','Client profile','Client information and reporting preferences.')"
+  ],
+  [
+    "app.js",
+    1,
+    "head('Client identity','Start here. Product inputs are in the next step.')",
+    "head('Client details','Required fields are marked with an asterisk.')"
+  ],
+  [
+    "app.js",
+    1,
+    "Segment',{options:{HNWI:'HNWI','Private Client':'Private Client',Corporate:'Corporate','Family Office':'Family Office',Other:'Other'}}",
+    "Client category',{options:{HNWI:'HNWI','Private Client':'Private client',Corporate:'Corporate','Family Office':'Family office',Other:'Other'}}"
+  ],
+  [
+    "app.js",
+    1,
+    "Client preference; this release’s interface and report labels are English.",
+    ""
+  ],
+  [
+    "app.js",
+    1,
+    "Client-facing and internal notes",
+    "Notes and confidentiality"
+  ],
+  [
+    "app.js",
+    1,
+    "Notes shown to the client",
+    "Client report notes"
+  ],
+  [
+    "app.js",
+    1,
+    "Private internal notes",
+    "Internal notes"
+  ],
+  [
+    "app.js",
+    1,
+    "Excluded from Client / Meeting views and client report files.",
+    "Not included in client reports."
+  ],
+  [
+    "app.js",
+    1,
+    "Continue to Gold ",
+    "Gold calculator "
+  ],
+  [
+    "app.js",
+    1,
+    "btn('Other products','client-portfolio')",
+    "btn('Investment holdings','client-portfolio')"
+  ],
+  [
+    "app.js",
+    1,
+    "Open a saved record or create a new one. Current inputs are saved before switching.",
+    "Current changes are saved before another record is opened."
+  ],
+  [
+    "app.js",
+    1,
+    "Open saved records",
+    "Saved clients"
+  ],
+  [
+    "app.js",
+    3,
+    "Create new client",
+    "New client"
+  ],
+  [
+    "app.js",
+    1,
+    "Device-local storage. No cross-device synchronisation is configured.",
+    "Records are stored on this device. Keep a separate backup."
+  ],
+  [
+    "app.js",
+    1,
+    "intro('02 / Gold','Gold calculator','Calculate a batch, check the preview, then add it to this client.',state.gold.draft.id?'Editing batch':'New batch')",
+    "intro('gold','Gold calculator','Purchase pricing and transaction records.',state.gold.draft.id?'Edit transaction':'New transaction')"
+  ],
+  [
+    "app.js",
+    1,
+    "head('Batch inputs',state.gold.draft.id?'Editing uses saved AED/g prices to preserve the original batch economics.':'Enter quantity and any two of Spot, All-in and Premium.')",
+    "head('Pricing details',state.gold.draft.id?'Original transaction prices are retained in AED per gram.':'Enter the quantity and any two of spot price, purchase price and premium.')"
+  ],
+  [
+    "app.js",
+    1,
+    "Spot / market price",
+    "Spot price"
+  ],
+  [
+    "app.js",
+    1,
+    "All-in / client price",
+    "Purchase price (all-in)"
+  ],
+  [
+    "app.js",
+    1,
+    "Zero is valid. Leave blank when calculating it from the two prices.",
+    "Leave blank to calculate the premium from the two prices."
+  ],
+  [
+    "app.js",
+    1,
+    "Batch date, reference and additional details",
+    "Transaction details and notes"
+  ],
+  [
+    "app.js",
+    1,
+    "Batch date",
+    "Transaction date"
+  ],
+  [
+    "app.js",
+    1,
+    "Batch reference",
+    "Transaction reference"
+  ],
+  [
+    "app.js",
+    1,
+    "Batch status",
+    "Transaction status"
+  ],
+  [
+    "app.js",
+    1,
+    "existing:'Existing Holding'",
+    "existing:'Existing holding'"
+  ],
+  [
+    "app.js",
+    1,
+    "flexible:'Flexible / Manual'",
+    "flexible:'Flexible / manual'"
+  ],
+  [
+    "app.js",
+    1,
+    "Internal batch note",
+    "Internal transaction note"
+  ],
+  [
+    "app.js",
+    1,
+    "Retained from the original record. Does not set the quantity or change the calculation.",
+    "For reference only. This amount does not determine the quantity."
+  ],
+  [
+    "app.js",
+    1,
+    "Save batch changes",
+    "Save transaction"
+  ],
+  [
+    "app.js",
+    1,
+    "Add gold batch",
+    "Add transaction"
+  ],
+  [
+    "app.js",
+    2,
+    "View results ",
+    "Portfolio overview "
+  ],
+  [
+    "app.js",
+    1,
+    "head('Saved gold batches',state.gold.batches.length+' records · Editing updates a row; it does not create a duplicate.')",
+    "head('Gold transactions',state.gold.batches.length+' recorded transactions')"
+  ],
+  [
+    "app.js",
+    1,
+    "${E(b.reference||'Gold batch')}",
+    "${E(b.reference||'Gold purchase')}"
+  ],
+  [
+    "app.js",
+    1,
+    "${E(b.status)} · ${E(b.schedule)}",
+    "${E(statusLabel(b.status))} · ${E(scheduleLabel(b.schedule))}"
+  ],
+  [
+    "app.js",
+    1,
+    "No batches added. Calculating a preview does not add a batch.",
+    "No gold transactions recorded."
+  ],
+  [
+    "app.js",
+    1,
+    "Batch management",
+    "Manage transactions"
+  ],
+  [
+    "app.js",
+    1,
+    "Clear all gold batches",
+    "Delete all gold transactions"
+  ],
+  [
+    "app.js",
+    1,
+    "Enter your inputs to see the calculated client total before adding a batch.",
+    "The purchase amount will appear here once the pricing details are complete."
+  ],
+  [
+    "app.js",
+    1,
+    "Calculated preview — not added yet",
+    "Purchase amount · not yet recorded"
+  ],
+  [
+    "app.js",
+    1,
+    "This preview becomes a saved batch only after you tap the primary button.",
+    "Select Add transaction to save this purchase."
+  ],
+  [
+    "app.js",
+    1,
+    "intro('02 / Other products','Build the portfolio','Record other investments alongside gold. No product-specific pricing model is assumed.',state.holdingDraft.id?'Editing holding':'New holding')",
+    "intro('portfolio','Investment holdings','Investment amounts, valuations and maturity details.',state.holdingDraft.id?'Edit holding':'New holding')"
+  ],
+  [
+    "app.js",
+    1,
+    "head('Product inputs')",
+    "head('Investment details')"
+  ],
+  [
+    "app.js",
+    1,
+    "Blank means unvalued — not zero and not the invested amount.",
+    "Leave blank when a current valuation is not available."
+  ],
+  [
+    "app.js",
+    1,
+    "Dates, coupon and client-facing note",
+    "Dates, income and notes"
+  ],
+  [
+    "app.js",
+    1,
+    "Note shown to the client",
+    "Client report note"
+  ],
+  [
+    "app.js",
+    1,
+    "head('Portfolio registry',state.holdings.length+' records')",
+    "head('Investment holdings',state.holdings.length+' recorded holdings')"
+  ],
+  [
+    "app.js",
+    1,
+    "${E(C.types[h.type])} · ${E(h.status)}",
+    "${E(C.types[h.type])} · ${E(statusLabel(h.status))}"
+  ],
+  [
+    "app.js",
+    1,
+    "No other products added. Gold is consolidated automatically.",
+    "No other investments recorded. Gold is included in the portfolio overview."
+  ],
+  [
+    "app.js",
+    1,
+    "intro('Client-facing view',state.ui.mode==='meeting'?'Meeting overview':'Client preview','No internal economics or editable forms are shown here.')",
+    "intro('results','Portfolio overview','')"
+  ],
+  [
+    "app.js",
+    1,
+    "intro('03 / Review','Inputs into insight','Confirm the valuation inputs before using or sharing the results.')",
+    "intro('results','Portfolio overview','Valuation, performance and consolidated holdings.')"
+  ],
+  [
+    "app.js",
+    1,
+    "Manually entered price; not a live quote.",
+    "Valuation uses the price and date entered below, not a live quote."
+  ],
+  [
+    "app.js",
+    1,
+    "btn('Update results','refresh-results'",
+    "btn('Update valuation','refresh-results'"
+  ],
+  [
+    "app.js",
+    1,
+    "btn('Set today','today')",
+    "btn('Use today’s date','today')"
+  ],
+  [
+    "app.js",
+    1,
+    "intro('04 / Reports','A clear client copy','Preview first. Client outputs contain only client-facing information.')",
+    "intro('reports','Reports','Prepare and review portfolio documents.')"
+  ],
+  [
+    "app.js",
+    1,
+    "intro('Advisor profile','The report signature','Only the information entered here appears in the report footer.')",
+    "intro('client','Advisor details','Contact details and report signature.')"
+  ],
+  [
+    "app.js",
+    1,
+    "intro('Internal only','Revenue & review','This view is not for client sharing.')",
+    "intro('internal','Internal review','Confidential pricing and revenue information.')"
+  ],
+  [
+    "app.js",
+    1,
+    "SVG uploads are not executed.",
+    "SVG is not supported for uploads."
+  ],
+  [
+    "app.js",
+    1,
+    "Direct file access unavailable. Downloading a fresh master.",
+    "Direct file access is unavailable. A new editable copy will be downloaded."
+  ],
+  [
+    "app.js",
+    1,
+    "toast(i>=0?'Batch updated — no duplicate created.':'Gold batch added to '+state.client.name+'.')",
+    "toast(i>=0?'Transaction updated.':'Transaction saved for '+state.client.name+'.')"
+  ],
+  [
+    "app.js",
+    1,
+    "toast(i>=0?'Product updated — no duplicate created.':'Product added to '+state.client.name+'.')",
+    "toast(i>=0?'Holding updated.':'Holding saved for '+state.client.name+'.')"
+  ],
+  [
+    "app.js",
+    1,
+    "$('toolsButton').innerHTML=icon('menu');",
+    "$('viewsToggle').onclick=()=>{const hidden=!$('modeBar').hidden;$('modeBar').hidden=hidden;$('viewsToggle').setAttribute('aria-expanded',String(!hidden));};\n $('toolsButton').innerHTML=icon('menu');"
+  ],
+  [
+    "reports.js",
+    1,
+    "title.startsWith('INTERNAL')",
+    "title.startsWith('Internal')"
+  ],
+  [
+    "reports.js",
+    1,
+    "'Client Report'",
+    "'Portfolio report'"
+  ],
+  [
+    "reports.js",
+    2,
+    "'Internal copy':'Client copy'",
+    "'Confidential · Internal':'Portfolio report'"
+  ],
+  [
+    "reports.js",
+    2,
+    "Export ID",
+    "Document reference"
+  ],
+  [
+    "reports.js",
+    1,
+    "'Active / proposed products'",
+    "'Recorded investments'"
+  ],
+  [
+    "reports.js",
+    1,
+    "'Weighted gold average'",
+    "'Average gold purchase price'"
+  ],
+  [
+    "reports.js",
+    1,
+    "'Gold accumulation'",
+    "'Gold holdings'"
+  ],
+  [
+    "reports.js",
+    1,
+    "'Gold batches'",
+    "'Gold transactions'"
+  ],
+  [
+    "reports.js",
+    1,
+    "active / proposed batches",
+    "proposed / booked transactions"
+  ],
+  [
+    "reports.js",
+    1,
+    "All-in price is the client purchase price in AED per gram. Current valuation date:",
+    "Purchase prices include the premium and are expressed in AED per gram. Valuation date:"
+  ],
+  [
+    "reports.js",
+    1,
+    "'All-in AED/g','Client total AED'",
+    "'Purchase price AED/g','Purchase amount AED'"
+  ],
+  [
+    "reports.js",
+    1,
+    "'Client-facing note'",
+    "'Notes'"
+  ],
+  [
+    "reports.js",
+    1,
+    "'INTERNAL · Revenue & review'",
+    "'Internal · Revenue and pricing'"
+  ],
+  [
+    "reports.js",
+    1,
+    "Export preparation history",
+    "Report history"
+  ],
+  [
+    "reports.js",
+    1,
+    "Prepared from the supplied client record.",
+    "Prepared using the recorded portfolio information."
+  ],
+  [
+    "index.html",
+    1,
+    "<strong>Multi-Product Console</strong>",
+    "<strong>Portfolio console</strong>"
+  ],
+  [
+    "index.html",
+    1,
+    "<button id=\"toolsButton\"",
+    "<button id=\"viewsToggle\" class=\"views-toggle\" aria-controls=\"modeBar\" aria-expanded=\"true\">Views</button><button id=\"toolsButton\""
+  ],
+  [
+    "index.html",
+    1,
+    "<div class=\"mode-wrap\">",
+    "<div id=\"modeBar\" class=\"mode-wrap\">"
+  ],
+  [
+    "index.html",
+    1,
+    "aria-label=\"Client workflow\"",
+    "aria-label=\"Portfolio navigation\""
+  ],
+  [
+    "index.html",
+    1,
+    "<h2 id=\"toolsTitle\">Workspace tools</h2>",
+    "<h2 id=\"toolsTitle\">Tools and settings</h2>"
+  ],
+  [
+    "index.html",
+    1,
+    "<script src=\"assets.js\"></script>",
+    "<script src=\"assets.js\"></script>\n<script src=\"artwork.js\"></script>"
+  ],
+  [
+    "sw.js",
+    1,
+    "ramy-shell-13-0-2",
+    "ramy-shell-13-1-0"
+  ],
+  [
+    "sw.js",
+    1,
+    "'assets.js','core.js'",
+    "'assets.js','artwork.js','core.js'"
+  ]
+]
