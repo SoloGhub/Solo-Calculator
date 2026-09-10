@@ -1,0 +1,33 @@
+name: RAMY artwork intake
+on:
+  push:
+    branches: [ramy/mobile-console-v13]
+    paths: ['.github/workflows/ramy-artwork-intake.yml']
+permissions:
+  contents: read
+jobs:
+  assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Retrieve artwork from completed Adobe operations
+        shell: python
+        run: |
+          import pathlib, urllib.request, hashlib, json
+          out=pathlib.Path('ramy-artwork');out.mkdir()
+          sources={
+            'crest-transparent.png':'https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:614810fc-9daa-44bc-9699-0a7f2e433984',
+            'financial-icons.png':'https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:12efaf3e-e7f1-49cc-b449-360d1f714674'
+          }
+          manifest={}
+          for name,url in sources.items():
+            with urllib.request.urlopen(url,timeout=40) as response: data=response.read(15000000)
+            if not data.startswith(b'\x89PNG\r\n\x1a\n'): raise RuntimeError('PNG signature missing: '+name)
+            (out/name).write_bytes(data)
+            manifest[name]={'sha256':hashlib.sha256(data).hexdigest(),'bytes':len(data),'source':url}
+          (out/'provenance.json').write_text(json.dumps(manifest,indent=2))
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RAMY-reviewed-artwork
+          path: ramy-artwork/
+          retention-days: 30
