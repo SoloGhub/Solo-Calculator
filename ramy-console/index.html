@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="beige">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f4eee4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="RAMY">
+<meta name="referrer" content="no-referrer">
+<title>RAMY · Multi-Product Console</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon192.png" type="image/png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top"><div class="top-inner"><img id="brandLogo" class="logo" alt="RAMY"><div class="app-title"><div class="eyebrow">Client workspace</div><strong>Multi-Product Console</strong></div><button id="toolsButton" class="icon-btn" aria-label="Open tools" aria-controls="tools" aria-expanded="false"></button></div></header>
+<div class="mode-wrap"><nav id="modes" class="modes" aria-label="Workspace mode"></nav></div>
+<div class="context"><div id="clientContext" class="context-name" dir="auto">No client selected</div><div id="saveStatus" class="save-state" role="status">Opening workspace…</div></div>
+<main id="main" class="content" tabindex="-1"></main>
+<nav id="bottomNav" class="bottom-nav" aria-label="Client workflow"><div id="navItems" class="bottom-nav-inner"></div></nav>
+<dialog id="tools" class="drawer" aria-labelledby="toolsTitle"><div class="dialog-head"><h2 id="toolsTitle">Workspace tools</h2><button id="closeTools" class="icon-btn" aria-label="Close tools">×</button></div><div id="toolsBody" class="dialog-body"></div></dialog>
+<dialog id="confirmDialog" aria-labelledby="confirmTitle"><div class="dialog-head"><h2 id="confirmTitle">Confirm action</h2></div><div class="dialog-body"><p id="confirmText"></p><div class="actions"><button id="confirmCancel" class="btn">Cancel</button><button id="confirmAccept" class="btn primary">Continue</button></div></div></dialog>
+<dialog id="preview" class="preview-dialog" aria-labelledby="previewTitle"><div class="dialog-head"><h2 id="previewTitle">Report preview</h2><button id="closePreview" class="icon-btn" aria-label="Close report preview">×</button></div><div class="preview-actions"><button id="printPreview" class="btn primary">Print / Save PDF</button><button id="downloadPreview" class="btn">Save HTML</button><button id="sharePreview" class="btn">Share HTML</button></div><iframe id="reportFrame" title="Prepared report" sandbox="allow-same-origin allow-modals"></iframe></dialog>
+<input id="importFile" type="file" accept=".html,.json,text/html,application/json" hidden>
+<div id="toast" class="toast" role="status" hidden></div>
+<script id="embedded-state" type="application/json">null</script>
+<script src="assets.js"></script>
+<script src="core.js"></script>
+<script src="store.js"></script>
+<script src="reports.js"></script>
+<script src="app.js"></script>
+<noscript><div class="panel">JavaScript is required to run the calculators. Open this application in a browser with JavaScript enabled.</div></noscript>
+</body></html>

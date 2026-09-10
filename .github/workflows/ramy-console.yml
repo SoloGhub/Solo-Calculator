@@ -1,0 +1,53 @@
+name: RAMY mobile console acceptance
+on:
+  push:
+    branches: [ramy/mobile-console-v13]
+    paths: ['ramy-console/**', '.github/workflows/ramy-console.yml']
+  pull_request:
+    paths: ['ramy-console/**', '.github/workflows/ramy-console.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit, firefox]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependencies
+        run: |
+          python -m pip install playwright==1.57.0 Pillow==12.3.0
+          python -m playwright install --with-deps ${{ matrix.engine }}
+      - name: Syntax and calculation regression
+        run: |
+          for f in ramy-console/*.js; do node --check "$f"; done
+          node --test ramy-console/tests/core.test.js
+      - name: Build application
+        run: python ramy-console/build.py
+      - name: Browser, data and responsive acceptance
+        run: python ramy-console/tests/browser_test.py --engine ${{ matrix.engine }}
+      - name: Save test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: RAMY-${{ matrix.engine }}-test-evidence
+          path: ramy-console/test-results/
+      - name: Save application build
+        if: success() && matrix.engine == 'chromium'
+        uses: actions/upload-artifact@v4
+        with:
+          name: RAMY-application-build
+          path: |
+            ramy-console/dist/
+            ramy-console/RAMY_Standalone.html
+            ramy-console/RAMY_Web_App.zip

@@ -1,0 +1,5 @@
+dist/
+test-results/
+RAMY_Standalone.html
+RAMY_Web_App.zip
+__pycache__/

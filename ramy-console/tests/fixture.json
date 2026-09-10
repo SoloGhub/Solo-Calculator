@@ -1,0 +1,131 @@
+{
+  "version": 11,
+  "clientId": "sample-client-001",
+  "updatedAt": "2026-07-30T14:00:00.000Z",
+  "ui": {
+    "mode": "advisor",
+    "language": "bilingual",
+    "activeSection": "dashboard"
+  },
+  "client": {
+    "name": "QA Client (synthetic)",
+    "reference": "QA-001",
+    "segment": "HNWI",
+    "preferredLanguage": "Bilingual",
+    "notesClient": "This sample demonstrates a multi-product client record and a weighted gold position.",
+    "notesInternal": "PRIVATE_CLIENT_CANARY"
+  },
+  "advisor": {
+    "name": "Ramy",
+    "title": "Relationship Manager",
+    "phone": "",
+    "email": "",
+    "company": "",
+    "signatureImage": "",
+    "logoImage": ""
+  },
+  "report": {
+    "type": "existing_proposal",
+    "status": "Indicative",
+    "date": "2026-07-30",
+    "priceDate": "",
+    "autoDate": true,
+    "autoSaveMasterOnExport": false,
+    "reportNumber": 1
+  },
+  "fx": {
+    "USD": 3.673,
+    "EUR": 4.1,
+    "GBP": 4.78
+  },
+  "gold": {
+    "currentAEDPerGram": "395",
+    "currentPriceDate": "2026-07-30",
+    "batches": [
+      {
+        "id": "g1",
+        "date": "2026-01-15",
+        "reference": "Initial batch",
+        "schedule": "one_off",
+        "status": "booked",
+        "quantity": 1,
+        "quantityUnit": "kg",
+        "grams": 1000,
+        "currency": "AED",
+        "priceUnit": "per_g",
+        "spotAEDg": 330,
+        "allInAEDg": 336.6,
+        "premium": 2,
+        "spotEntered": 330,
+        "allInEntered": 336.6,
+        "spotTotalAED": 330000,
+        "clientTotalAED": 336600,
+        "revenueAED": 6600,
+        "clientAmount": "",
+        "internalNote": "PRIVATE_BATCH_CANARY"
+      },
+      {
+        "id": "g2",
+        "date": "2026-04-10",
+        "reference": "Monthly accumulation",
+        "schedule": "monthly",
+        "status": "booked",
+        "quantity": 0.5,
+        "quantityUnit": "kg",
+        "grams": 500,
+        "currency": "AED",
+        "priceUnit": "per_g",
+        "spotAEDg": 370,
+        "allInAEDg": 377.4,
+        "premium": 2,
+        "spotEntered": 370,
+        "allInEntered": 377.4,
+        "spotTotalAED": 185000,
+        "clientTotalAED": 188700,
+        "revenueAED": 3700,
+        "clientAmount": "",
+        "internalNote": ""
+      }
+    ],
+    "draft": {
+      "date": "",
+      "reference": "",
+      "schedule": "one_off",
+      "status": "proposal",
+      "quantity": "",
+      "quantityUnit": "kg",
+      "currency": "AED",
+      "priceUnit": "per_g",
+      "spot": "",
+      "allIn": "",
+      "premium": "",
+      "clientAmount": "",
+      "internalNote": ""
+    },
+    "narrative": ""
+  },
+  "holdings": [
+    {
+      "id": "h1",
+      "type": "fixed_income",
+      "name": "Sample Fixed Income Note",
+      "status": "booked",
+      "currency": "USD",
+      "start": "2026-02-01",
+      "invested": 100000,
+      "current": 102500,
+      "maturity": "2027-02-01",
+      "yield": "5.5",
+      "note": ""
+    }
+  ],
+  "reportHistory": [],
+  "auditLog": [
+    {
+      "id": "a1",
+      "at": "2026-01-01T00:00:00Z",
+      "action": "PRIVATE_AUDIT_CANARY",
+      "detail": "Private review"
+    }
+  ]
+}

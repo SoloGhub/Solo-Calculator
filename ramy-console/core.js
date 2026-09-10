@@ -40,7 +40,7 @@
   function blankGold() {return {id:'',date:today(),reference:'',schedule:'one_off',status:'proposal',quantity:'',quantityUnit:'kg',currency:'AED',priceUnit:'per_g',spot:'',allIn:'',premium:'',clientAmount:'',internalNote:''};}
   function blankHolding() {return {id:'',type:'fixed_income',name:'',status:'proposal',currency:'AED',start:today(),invested:'',current:'',maturity:'',yield:'',note:''};}
   function blank() {
-    return {version:13,sourceVersion:null,clientId:uid(),updatedAt:'',ui:{mode:'advisor',theme:'beige',language:'english',activeSection:'client'},client:{name:'',reference:'',segment:'HNWI',preferredLanguage:'English',notesClient:'',notesInternal:''},advisor:{name:'Ramy',title:'Relationship Manager',phone:'',email:'',company:'',signatureImage:'',logoImage:''},report:{type:'fresh_proposal',status:'Draft',date:today(),autoSaveMasterOnExport:false},fx:{USD:3.673,EUR:'',GBP:''},gold:{currentAEDPerGram:'',currentPriceDate:today(),batches:[],draft:blankGold(),narrative:''},holdingDraft:blankHolding(),holdings:[],reportHistory:[],auditLog:[]};
+    return {version:13,sourceVersion:null,clientId:uid(),updatedAt:'',ui:{mode:'advisor',theme:'beige',language:'english',activeSection:'client'},client:{name:'',reference:'',segment:'HNWI',preferredLanguage:'English',notesClient:'',notesInternal:''},advisor:{name:'Ramy',title:'Relationship Manager',phone:'',email:'',company:'',signatureImage:'',logoImage:''},report:{type:'fresh_proposal',status:'Draft',date:today(),autoSaveMasterOnExport:false},fx:{USD:'',EUR:'',GBP:''},gold:{currentAEDPerGram:'',currentPriceDate:today(),batches:[],draft:blankGold(),narrative:''},holdingDraft:blankHolding(),holdings:[],reportHistory:[],auditLog:[]};
   }
   function validArray(value, label) {
     if (value===undefined) return [];
@@ -80,6 +80,10 @@
     if (!Number.isFinite(grams)) throw new Error('Select a valid quantity unit.');
     if (!['AED','USD'].includes(d.currency)) throw new Error('Gold price currency must be AED or USD.');
     if (!Number.isFinite(fxRate(fx,d.currency))) throw new Error('Enter the '+d.currency+'/AED exchange rate in Tools before using this currency.');
+    for(const [key,label] of [['spot','Spot price'],['allIn','All-in price'],['premium','Premium']]) {
+      if(String(d[key]??'').trim() && !Number.isFinite(num(d[key]))) throw new Error(label+' must be numeric or left blank.');
+    }
+    if (String(d.clientAmount??'').trim()) requireNumber(d.clientAmount,'Target amount');
     const p=solvePrices(toAEDg(num(d.spot),d.currency,d.priceUnit,fx),toAEDg(num(d.allIn),d.currency,d.priceUnit,fx),num(d.premium));
     const spotTotalAED=p.spot*grams,clientTotalAED=p.allIn*grams;
     if (![spotTotalAED,clientTotalAED].every(Number.isFinite)) throw new Error('The amount exceeds the supported numeric range.');
@@ -98,7 +102,7 @@
   function unique(items,label) {
     const ids=new Set();items.forEach(x=>{if(ids.has(x.id)) throw new Error('Duplicate '+label+' identifier: '+x.id);ids.add(x.id);});return items;
   }
-  function normalize(input) {
+  function normalize(input, recoverDrafts=false) {
     if (!input || typeof input!=='object' || Array.isArray(input) || !input.client || !input.gold) throw new Error('This is not a supported client record. Import an editable V11/V12/V13 master or JSON backup.');
     if (input.version && ![11,12,13].includes(Number(input.version))) throw new Error('Unsupported record version: '+input.version);
     const d=blank(),s=input;d.sourceVersion=s.sourceVersion||s.version||null;d.clientId=text(s.clientId,200)||d.clientId;d.updatedAt=text(s.updatedAt,100);
@@ -108,13 +112,17 @@
     d.ui.theme=option(s.ui?.theme,['beige','blue'],'beige');d.ui.mode=option(s.ui?.mode,modes,'advisor');
     d.ui.activeSection=option(s.ui?.activeSection,['client','gold','portfolio','results','reports','profile','internal'],'client');
     d.report.type=option(s.report?.type,Object.keys(reportNames),'fresh_proposal');d.report.status=text(s.report?.status||'Draft',50);d.report.date=date(s.report?.date,today());d.report.autoSaveMasterOnExport=!!s.report?.autoSaveMasterOnExport;
-    ['USD','EUR','GBP'].forEach(c=>{d.fx[c]=s.fx?.[c]??d.fx[c];if(text(d.fx[c]).trim()) requireNumber(d.fx[c],c+'/AED exchange rate',0,true);});
-    d.gold.currentAEDPerGram=s.gold.currentAEDPerGram??'';if(text(d.gold.currentAEDPerGram).trim()) requireNumber(d.gold.currentAEDPerGram,'Current gold price');
+    ['USD','EUR','GBP'].forEach(c=>{d.fx[c]=s.fx?.[c]??d.fx[c];if(!recoverDrafts&&text(d.fx[c]).trim()) requireNumber(d.fx[c],c+'/AED exchange rate',0,true);});
+    d.gold.currentAEDPerGram=s.gold.currentAEDPerGram??'';if(!recoverDrafts&&text(d.gold.currentAEDPerGram).trim()) requireNumber(d.gold.currentAEDPerGram,'Current gold price',0,true);
     d.gold.currentPriceDate=date(s.gold.currentPriceDate,today());d.gold.narrative=text(s.gold.narrative);
     d.gold.batches=unique(validArray(s.gold.batches,'Gold batches').map(b=>{
       if(!b||typeof b!=='object') throw new Error('Invalid gold batch.');
       const grams=requireNumber(b.grams,'Batch grams',0,true),spot=requireNumber(b.spotAEDg,'Batch spot price',0,true),allIn=requireNumber(b.allInAEDg,'Batch all-in price',0,true);
-      return {id:text(b.id,200)||uid(),date:date(b.date,today()),reference:text(b.reference,200),schedule:option(b.schedule,['one_off','monthly','weekly','flexible','existing'],'one_off'),status:option(b.status,['proposal','booked','cancelled'],'proposal'),quantity:Number.isFinite(num(b.quantity))?num(b.quantity):grams,quantityUnit:option(b.quantityUnit,['g','kg','oz'],'g'),grams,currency:option(b.currency,['AED','USD'],'AED'),priceUnit:option(b.priceUnit,['per_g','per_kg','per_oz'],'per_g'),spotAEDg:spot,allInAEDg:allIn,premium:(allIn/spot-1)*100,spotEntered:b.spotEntered??'',allInEntered:b.allInEntered??'',spotTotalAED:spot*grams,clientTotalAED:allIn*grams,revenueAED:(allIn-spot)*grams,clientAmount:text(b.clientAmount,100),internalNote:text(b.internalNote)};
+      if (![spot*grams,allIn*grams].every(Number.isFinite)) throw new Error('Batch total exceeds the supported numeric range.');
+      const quantityUnit=option(b.quantityUnit,['g','kg','oz'],'g');
+      const quantity=Number.isFinite(num(b.quantity))?num(b.quantity):grams/qtyToG(1,quantityUnit);
+      if(quantity<=0 || Math.abs(qtyToG(quantity,quantityUnit)-grams)>Math.max(1e-6,grams*1e-8)) throw new Error('Batch quantity and grams disagree.');
+      return {id:text(b.id,200)||uid(),date:date(b.date,today()),reference:text(b.reference,200),schedule:option(b.schedule,['one_off','monthly','weekly','flexible','existing'],'one_off'),status:option(b.status,['proposal','booked','cancelled'],'proposal'),quantity,quantityUnit,grams,currency:option(b.currency,['AED','USD'],'AED'),priceUnit:option(b.priceUnit,['per_g','per_kg','per_oz'],'per_g'),spotAEDg:spot,allInAEDg:allIn,premium:(allIn/spot-1)*100,spotEntered:b.spotEntered??'',allInEntered:b.allInEntered??'',spotTotalAED:spot*grams,clientTotalAED:allIn*grams,revenueAED:(allIn-spot)*grams,clientAmount:text(b.clientAmount,100),internalNote:text(b.internalNote)};
     }),'batch');
     d.holdings=unique(validArray(s.holdings,'Holdings').map(h=>holdingFromDraft(h)),'holding');
     for (const k of Object.keys(d.gold.draft)) d.gold.draft[k]=text(s.gold.draft?.[k]??d.gold.draft[k]);
