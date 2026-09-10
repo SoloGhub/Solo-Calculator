@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#70283f"><meta name="description" content="مساحة التمويل العقاري: إدخال مريح من الموبايل، وحساب الأقساط، وتشغيل ملفات السياسات على جهازك.">
+<meta name="apple-mobile-web-app-capable" content="yes"><title>Solo Finance — مساحة التمويل</title>
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="./apple-touch-icon.png"><link rel="manifest" href="./manifest.webmanifest"><link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div id="home">
+<header class="header"><a class="brand" href="./" aria-label="سولو فاينانس"><span class="mark">S</span><span dir="ltr">Solo<span class="light">Finance</span></span></a><span class="tag">مساحة المستشار</span></header>
+<main>
+<section class="intro"><p class="eyebrow">التمويل العقاري، بوضوح</p><h1>كل عميل،<br>له حسابه.</h1><p class="lead">من أول معلومة، لحد مقارنة التمويل. مساحة مرتبة للموبايل، ودخل العميل كل مصدر فيه منفصل.</p><div class="accent-line"></div><p class="subtle">تصميم مناسب للمس. خانات واضحة. خطوة واحدة في كل مرة.</p></section>
+<section class="workspace card" aria-labelledby="workspace-title"><span class="icon">S</span><p class="eyebrow">مساحة البنكين</p><h2 id="workspace-title">افتح ملفك، وابدأ العميل.</h2><p>ملف البنكين يفتح الحاسبة الكاملة: بيانات العميل، تفصيل الدخل، الالتزامات، العقار، تسعير البنكين، والنتيجة مع أسبابها.</p><button id="resume" class="primary" hidden>استكمال العمل بملف البنكين المحفوظ</button><button id="choose" class="primary">فتح ملف البنكين</button><input type="file" id="workspace-file" accept=".html,text/html" hidden><p class="hint">أول مرة: اختَر ملف <bdi>Solo_Finance_Banks.html</bdi> الذي وصلك مع التطبيق. يظل الملف محفوظًا على هذا الجهاز لتفتحه تلقائيًا في الزيارة التالية، ما لم تمسح بيانات المتصفح.</p><div class="privacy">ملف السياسات يعمل على جهازك. بيانات العملاء لا تُحفظ.</div><button id="forget" class="text-button" hidden>حذف ملف البنكين المحفوظ من هذا الجهاز</button><p id="load-status" class="status" role="status" aria-live="polite"></p></section>
+<section class="calculator card" aria-labelledby="quick-title"><div class="section-head"><div><p class="eyebrow">حساب سريع</p><h2 id="quick-title">جرّب القسط دلوقتي.</h2></div><span class="small-tag">بمدخلاتك</span></div><p class="subtle">حساب رياضي حسب السعر الذي تدخله. تقييم الأهلية ومقارنة البنوك داخل ملف البنكين.</p><form id="quick-form" novalidate><div class="grid">
+<label>قيمة العقار<span class="input-wrap"><input id="value" inputmode="decimal" autocomplete="off" placeholder="أدخل القيمة"><span>درهم</span></span><small id="value-words"></small></label>
+<label>الدفعة المقدمة<span class="input-wrap"><input id="deposit" inputmode="decimal" autocomplete="off" placeholder="أدخل القيمة"><span>درهم</span></span><small id="deposit-words"></small></label>
+<label>مدة التمويل<span class="input-wrap"><input id="years" inputmode="decimal" autocomplete="off" placeholder="أدخل المدة"><span>سنة</span></span><small id="years-words"></small></label>
+<label>السعر السنوي<span class="input-wrap"><input id="rate" inputmode="decimal" autocomplete="off" placeholder="من عرض التمويل"><span>بالمئة</span></span><small id="rate-words"></small></label>
+</div><button type="submit" class="primary calculate">احسب القسط</button><p class="status" id="quick-status" role="status" aria-live="polite"></p></form>
+<div id="quick-result" hidden aria-live="polite"><div class="result-main"><span>القسط الشهري للقرض</span><strong id="monthly"></strong><span>قبل التأمين والرسوم</span></div><div class="result-row"><span>مبلغ التمويل</span><b id="principal"></b></div><div class="result-row"><span>الدفعة المقدمة من قيمة العقار</span><b id="deposit-percent"></b></div><p class="hint">القسط محسوب على الرصيد المتناقص والسعر المُدخل. قد يتغير القسط عند تغيّر السعر، ولا يشمل رسوم الشراء أو التأمين.</p></div>
+</section>
+<section class="how"><h2>ملف العميل في ست خطوات.</h2><div class="steps"><span>العميل</span><span>الدخل</span><span>الالتزامات</span><span>العقار</span><span>التسعير</span><span>المقارنة</span></div></section>
+</main><footer><span>إضافة التطبيق للشاشة الرئيسية تتم من قائمة المتصفح، إذا كانت متاحة على جهازك.</span><span dir="ltr">Prepared by Solo</span></footer>
+</div>
+<section id="workspace-view" hidden aria-label="مساحة البنكين"><div class="workspace-bar"><strong>مساحة البنكين</strong><span>على جهازك</span><button id="close-workspace" type="button">القائمة</button></div><iframe id="workspace-frame" title="حاسبة أهلية التمويل ومقارنة البنكين" sandbox="allow-scripts allow-modals allow-downloads"></iframe></section>
+<noscript>يلزم تشغيل جافاسكريبت لاستخدام الحاسبة.</noscript><script type="module" src="./app.mjs"></script>
+</body></html>
