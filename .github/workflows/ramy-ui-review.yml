@@ -33,6 +33,16 @@ jobs:
             python ramy-console/refine_styles.py
             python ramy-console/package_reviewed_artwork.py
           fi
+          python - <<'PY'
+          from pathlib import Path
+          test=Path('ramy-console/tests/review_ui_test.py')
+          source=test.read_text()
+          source=source.replace("page.locator('[data-action=master]:visible').first.click()", "page.locator('#tools [data-action=master]:visible').first.click()")
+          test.write_text(source)
+          css=Path('ramy-console/styles.css')
+          rules='\n/* Keep report headings and short sections with their data. */\n@media print{.report-content > .panel{break-inside:avoid-page}.report-content .panel-head,.report-content .panel-head+p{break-after:avoid-page}}\n'
+          if '/* Keep report headings' not in css.read_text():css.write_text(css.read_text()+rules)
+          PY
       - name: Verify calculations and JavaScript syntax
         run: |
           for f in ramy-console/*.js; do node --check "$f"; done
@@ -45,7 +55,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add ramy-console/app.js ramy-console/core.js ramy-console/reports.js ramy-console/styles.css ramy-console/index.html ramy-console/sw.js ramy-console/assets.js ramy-console/artwork.js ramy-console/artwork-provenance.json ramy-console/editorial-changes.json ramy-console/tests/core.test.js
+          git add ramy-console/app.js ramy-console/core.js ramy-console/reports.js ramy-console/styles.css ramy-console/index.html ramy-console/sw.js ramy-console/assets.js ramy-console/artwork.js ramy-console/artwork-provenance.json ramy-console/editorial-changes.json ramy-console/tests/core.test.js ramy-console/tests/review_ui_test.py
           if ! git diff --cached --quiet; then
             git commit -m 'fix(ramy): remove numbered screens, revise professional copy, embed transparent crest and financial artwork'
             git push origin HEAD:ramy/mobile-console-v13
