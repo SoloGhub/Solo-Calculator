@@ -31,7 +31,7 @@ jobs:
       - name: Syntax and calculation regression
         run: |
           for f in ramy-console/*.js; do node --check "$f"; done
-          node --test ramy-console/tests/core.test.js
+          node --test ramy-console/tests/*.test.js
       - name: Build application
         run: python ramy-console/build.py
       - name: Browser, data and responsive acceptance

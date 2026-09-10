@@ -35,7 +35,7 @@ def setup_page(browser,viewport=(390,844),mobile=True):
     page.wait_for_selector('html[data-ready=true]');return context,page
 
 def input_(page,path,value):page.locator('[data-field="'+path+'"]').fill(str(value))
-def action(page,name):page.locator('[data-action="'+name+'"]:visible').first.click()
+def action(page,name):page.locator('[data-action="'+name+'"]:visible').first.click(no_wait_after=True)
 def go(page,name):page.locator('#navItems [data-screen="'+name+'"]').click()
 def accept(page):page.locator('#confirmAccept').click()
 def modes(page,name):page.locator('[data-mode="'+name+'"]').click()
@@ -116,7 +116,7 @@ try:
             check(audience+' PDF preview '+theme,'<article class="report-content">' in doc)
             if args.engine=='chromium':
                 rp=browser.new_page(viewport={'width':900,'height':1200});rp.set_content(doc);rp.emulate_media(media='print');rp.pdf(path=str(OUT/(audience+'-'+theme+'.pdf')),format='A4',print_background=True,prefer_css_page_size=True);rp.close()
-            page.locator('#closePreview').click()
+            page.locator('#closePreview').click(no_wait_after=True);page.wait_for_function("!document.querySelector('#preview').open");page.wait_for_timeout(100)
     modes(page,'client');check('client mode removes editors',page.locator('#main input:visible,#main textarea:visible').count()==0)
     for canary in ['PRIVATE_CLIENT_CANARY','PRIVATE_BATCH_CANARY','PRIVATE_AUDIT_CANARY','Gross revenue']:check('client DOM excludes '+canary,canary not in page.locator('#main').inner_html())
     page.locator('#toolsButton').click();check('client tools exclude internal actions',page.locator('#tools [data-action=pdf-internal]').count()==0);page.locator('#closeTools').click()
@@ -136,14 +136,21 @@ try:
             page.locator('#toolsButton').click();check(f'tools drawer visible {width} {theme}',page.locator('#tools').is_visible());page.keyboard.press('Escape');check(f'tools close Escape {width} {theme}',not page.locator('#tools').is_visible())
             if width in [390,1366]:
                 go(page,'client');page.wait_for_timeout(100);page.evaluate("document.querySelector('#toast').hidden=true");page.screenshot(path=str(OUT/f'client-{theme}-{width}.png'),full_page=True)
+    from extra_checks import run_extra
+    run_extra(page,check,input_,action,go,accept,ROOT,args.memory)
     if not args.memory:
         # Service worker is a real network/offline check, not an emulation of cache APIs.
         awaiter="navigator.serviceWorker.ready.then(()=>true)";page.evaluate(awaiter);page.reload();page.wait_for_selector('html[data-ready=true]')
         page.wait_for_function('!!navigator.serviceWorker.controller')
+        cache_state=page.evaluate("async()=>({url:location.href,controller:navigator.serviceWorker.controller.scriptURL,caches:await Promise.all((await caches.keys()).map(async k=>({name:k,urls:(await(await caches.open(k)).keys()).map(r=>r.url)})))})")
+        (OUT/'offline-before.json').write_text(json.dumps(cache_state,indent=2))
         context.set_offline(True);page.reload();page.wait_for_selector('html[data-ready=true]');check('real offline shell loads',page.title().startswith('RAMY'))
         context.set_offline(False)
     check('no JavaScript runtime errors',not errors)
     context.close();browser.close()
+except Exception as exc:
+    checks.append({'name':'Fatal test exception: '+str(exc),'pass':False})
+    raise
 finally:
     report={'engine':args.engine,'environment':'restricted in-memory harness; storage and download transport mocked' if args.memory else 'Playwright browser on HTTP localhost; real IndexedDB and download transport','physical_devices_tested':False,'checks':checks,'passed':sum(c['pass'] for c in checks),'failed':sum(not c['pass'] for c in checks),'runtime_errors':errors}
     (OUT/'results.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))

@@ -3,7 +3,7 @@
 'use strict';
 const C=root.RamyCore,E=C.esc;
 const kpi=(label,value,sub='')=>`<div class="kpi"><small>${E(label)}</small><strong class="num">${E(value)}</strong><div class="sub">${E(sub)}</div></div>`;
-const panel=(title,body)=>`<section class="panel"><div class="panel-head"><h2>${E(title)}</h2></div>${body}</section>`;
+const panel=(title,body)=>`<section class="panel"${title.startsWith('INTERNAL')?' style="break-inside:auto"':''}><div class="panel-head"><h2>${E(title)}</h2></div>${body}</section>`;
 const table=(headers,rows)=>`<table class="report-table"><thead><tr>${headers.map(x=>`<th>${E(x)}</th>`).join('')}</tr></thead><tbody>${rows.length?rows.map(r=>`<tr>${r.map(x=>`<td dir="auto">${E(x)}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${headers.length}">No records.</td></tr>`}</tbody></table>`;
 function body(s,internal=false,exportId='Preview'){
  const p=C.clientProjection(s),g=p.gold,a=p.advisor;
@@ -25,7 +25,7 @@ function body(s,internal=false,exportId='Preview'){
  return html;
 }
 function documentHtml(s,internal,exportId,css){
- return '<!doctype html><html lang="en" dir="ltr" data-theme="'+(s.ui.theme==='blue'?'blue':'beige')+'"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>'+E((internal?'Internal':'Client')+' report - '+s.client.name)+'</title><style>'+css+'</style></head><body><main class="content" style="padding-bottom:24px">'+body(s,internal,exportId)+'</main></body></html>';
+ return '<!doctype html><html lang="en" dir="ltr" data-theme="'+(s.ui.theme==='blue'?'blue':'beige')+'"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>'+E((internal?'Internal':'Client')+' report - '+s.client.name)+'</title><style>'+css+'@media print{.report-content h3{break-after:avoid-page}}'+'</style></head><body><main class="content" style="padding-bottom:24px">'+body(s,internal,exportId)+'</main></body></html>';
 }
 root.RamyReports={body,documentHtml,kpi};
 })(globalThis);
